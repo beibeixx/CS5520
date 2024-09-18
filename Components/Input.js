@@ -1,20 +1,45 @@
-import { StyleSheet, Text, TextInput, View, Button, Modal} from 'react-native'
-import React from 'react'
-import { useState } from 'react'
+import { StyleSheet, Text, TextInput, View, Button, Modal, Alert, Image} from "react-native";
+import React from "react";
+import { useState } from "react";
 
-export default function Input({ textInputFocus, inputHandler, visibility }) {
-    const [text, setText] = useState('');
-    const [focus, setFocus] = useState(false);
-    const [count, setCount] = useState(0);
-    function handleConfirm() {
+export default function Input({ textInputFocus, inputHandler, visibility, cancelHandler }) {
+  const [text, setText] = useState("");
+  const [focus, setFocus] = useState(false);
+  const [count, setCount] = useState(0);
+  function handleConfirm() {
+    inputHandler(text);
+    setText('');
+  }
 
-      inputHandler(text);
-    }
-  
-    return (
-      <Modal animationType='slide' visible={visibility}>
+  const handleCancel = () => {
+    Alert.alert("Cancel", "Are you sure you want to cancel?", [
+      {
+        text: "No",
+        style: "cancel",
+      },
+      {
+        text: "Yes",
+        onPress: () => {
+          cancelHandler();
+          setText("");
+        },
+      },
+    ]);
+  };
+
+  return (
+    <Modal animationType="slide" visible={visibility}>
       <View style={styles.container}>
-        
+      <Image 
+          source={{uri: 'https://cdn-icons-png.flaticon.com/512/2617/2617812.png'}}
+          style={styles.image}
+          alt="Network image"
+        />
+        <Image 
+          source={require('../assets/target-icon.png')}
+          style={styles.image}
+          alt="Local image"
+        />
         <TextInput
           style={styles.input}
           autoFocus={textInputFocus}
@@ -29,28 +54,39 @@ export default function Input({ textInputFocus, inputHandler, visibility }) {
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
         />
-          {focus && count > 0 && (
-            <Text>{count}</Text>
-          )}
-          {!focus && count > 0 && (
-            <Text>{count >= 3 ? "Thank you" : "Please type more than 3 characters"}</Text>
-          )}
-          <Button title="Confirm" onPress={handleConfirm} />
+        {focus && count > 0 && <Text>{count}</Text>}
+        {!focus && count > 0 && (
+          <Text>
+            {count >= 3 ? "Thank you" : "Please type more than 3 characters"}
+          </Text>
+        )}
+        <View style={styles.buttonContainer}>
+          <Button title="Cancel" onPress={handleCancel} />
+          <Button title="Confirm" onPress={handleConfirm} disabled={count < 3}/>
+        </View>
       </View>
-      </Modal>
-    )
+    </Modal>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  input: {
+    borderColor: "gray",
+    borderWidth: 2,
+    padding: 10,
+  },  
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  image: {
+    width: 100,
+    height: 100,
   }
-  
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'white',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    input: {
-      borderColor: 'gray',
-      borderWidth: 2,
-      padding: 10,
-    }
-  });
+});
