@@ -1,10 +1,14 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { StyleSheet, Text, TextInput, View, Button} from 'react-native'
 import React from 'react'
 import { useState } from 'react';
 
 export default function Input(props) {
     const [text, setText] = useState('')
     const [isFocused, setIsFocused] = useState(true)
+
+    const handleConfirm = () => {
+        console.log(text);
+    }
 
     return (
         <View>
@@ -29,6 +33,7 @@ export default function Input(props) {
                     {text.length >= 3 ? "Thank you" : "Please type more than 3 characters"}
                 </Text>
             )}
+            <Button title="Confirm" onPress={handleConfirm} />
         </View>
     )
 }
