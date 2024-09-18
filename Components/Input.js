@@ -1,41 +1,56 @@
-import { StyleSheet, Text, TextInput, View, Button} from 'react-native'
+import { StyleSheet, Text, TextInput, View, Button, Modal} from 'react-native'
 import React from 'react'
-import { useState } from 'react';
+import { useState } from 'react'
 
-export default function Input(props) {
-    const [text, setText] = useState('')
-    const [isFocused, setIsFocused] = useState(true)
+export default function Input({ textInputFocus, inputHandler, visibility }) {
+    const [text, setText] = useState('');
+    const [focus, setFocus] = useState(false);
+    const [count, setCount] = useState(0);
+    function handleConfirm() {
 
-    const handleConfirm = () => {
-        console.log(text);
+      inputHandler(text);
     }
-
+  
     return (
-        <View>
-            <TextInput
-                placeholder="here is it"
-                autoCorrect={true}
-                keyboardType='default'
-                value={text}
-                style={{ borderBottomColor: "purple", borderBottomWidth: 2}}
-                onChangeText={function (changedText) {
-                setText(changedText);
-                }}
-                autoFocus={props.autoFocus}
-                onBlur={() => setIsFocused(false)}
-                onFocus={() => setIsFocused(true)}
-            />
-            {text.length > 0 && isFocused && (
-                <Text style={styles.counter}>{text.length} characters</Text>
-            )}
-            {!isFocused && (
-                <Text style={styles.message}>
-                    {text.length >= 3 ? "Thank you" : "Please type more than 3 characters"}
-                </Text>
-            )}
-            <Button title="Confirm" onPress={handleConfirm} />
-        </View>
+      <Modal animationType='slide' visible={visibility}>
+      <View style={styles.container}>
+        
+        <TextInput
+          style={styles.input}
+          autoFocus={textInputFocus}
+          autoCorrect={true}
+          placeholder="Type something"
+          keyboardType="default"
+          value={text}
+          onChangeText={(changeText) => {
+            setText(changeText);
+            setCount(changeText.length);
+          }}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+        />
+          {focus && count > 0 && (
+            <Text>{count}</Text>
+          )}
+          {!focus && count > 0 && (
+            <Text>{count >= 3 ? "Thank you" : "Please type more than 3 characters"}</Text>
+          )}
+          <Button title="Confirm" onPress={handleConfirm} />
+      </View>
+      </Modal>
     )
-}
-
-const styles = StyleSheet.create({})
+  }
+  
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: 'white',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    input: {
+      borderColor: 'gray',
+      borderWidth: 2,
+      padding: 10,
+    }
+  });
