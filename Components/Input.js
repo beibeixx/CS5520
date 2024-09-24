@@ -42,7 +42,7 @@ export default function Input({
   };
 
   return (
-    <Modal animationType="slide" visible={visibility} transparent={ture}>
+    <Modal animationType="slide" visible={visibility} transparent={true}>
       <View style={styles.container}>
         <View style={styles.modalContainer}>
           <Image
