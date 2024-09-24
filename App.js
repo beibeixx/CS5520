@@ -12,6 +12,7 @@ import {
 import Header from "./Components/Header";
 import Input from "./Components/Input";
 import React, { useState } from "react";
+import GoalItem from "./Components/GoalItem";
 
 export default function App() {
   const appName = "My app";
@@ -46,17 +47,14 @@ export default function App() {
         />
       </View>
       <View style={styles.bottomView}>
-        <FlatList contentContainerStyle={styles.scrollViewContainer} 
-        data={goals} 
-        renderItem={({item}) => {
-          return (
-            <View key={item.id} style={styles.textContainer}>
-              <Text style={styles.text}>{item.text}</Text>
-            </View>
-          );
-        }}>
-        </FlatList>
-      {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <FlatList
+          contentContainerStyle={styles.scrollViewContainer}
+          data={goals}
+          renderItem={({ item }) => {
+            return <GoalItem goal={item} />;
+          }}
+        ></FlatList>
+        {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
 
         {goals.map((goal) => {
           return (
@@ -67,7 +65,6 @@ export default function App() {
         })}
         <Text style={styles.text}>{receivedData} </Text> 
         </ScrollView> */}
-
       </View>
     </SafeAreaView>
   );
@@ -80,19 +77,10 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     justifyContent: "center",
   },
-  scrollViewContainer:{
+  scrollViewContainer: {
     alignItems: "center",
   },
-  text: {
-    color: "white",
-    fontSize: 15,
-  },
-  textContainer: {
-    backgroundColor: "#aaa",
-    borderRadius: 5,
-    marginTop: 50,
-    height: 100,
-  },
+
   topView: {
     flex: 1,
     alignItems: "center",
