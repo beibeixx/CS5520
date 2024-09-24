@@ -33,6 +33,21 @@ export default function App() {
   const handleCancel = () => {
     setVisible(false);
   };
+
+  const handleGoalDelete = (deletedId) => {
+    // const newGoals = goals.filter((goalObj) => {
+    //   return goalObj.id != deleteId;
+    // });
+    // setGoals(newGoals);
+    console.log(deletedId)
+
+    setGoals((prebGoals) => {
+      return prebGoals.filter((goalObj) => {
+        return goalObj.id != deletedId;
+      })
+    })
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -51,7 +66,7 @@ export default function App() {
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
           renderItem={({ item }) => {
-            return <GoalItem goal={item} />;
+            return <GoalItem goal={item} deleteHandler={handleGoalDelete} />;
           }}
         ></FlatList>
         {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>

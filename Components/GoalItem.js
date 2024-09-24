@@ -1,10 +1,14 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import React from "react";
 
-export default function GoalItem({ goal }) {
+export default function GoalItem({ goal, deleteHandler }) {
+    function handleDelete() {
+        deleteHandler(goal.id);
+    }
   return (
-    <View key={goal.id} style={styles.textContainer}>
+    <View style={styles.textContainer}>
       <Text style={styles.text}>{goal.text}</Text>
+      <Button title="X" color="grey" onPress={handleDelete}/>
     </View>
   );
 }
@@ -18,6 +22,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#aaa",
     borderRadius: 5,
     marginTop: 50,
-    height: 100,
+    // height: 100,
+    flexDirection:"row",
+    alignItems:"center",
   },
 });
