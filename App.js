@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
+  Alert,
 } from "react-native";
 import Header from "./Components/Header";
 import Input from "./Components/Input";
@@ -48,6 +49,22 @@ export default function App() {
     })
   };
 
+  const handleDeleteAll = () => {
+    Alert.alert(
+      "Delete All Goals",
+      "Are you sure you want to delete all goals?",
+      [
+        {
+          text: "No",
+          style: "cancel"
+        },
+        {
+          text: "Yes",
+          onPress: () => setGoals([])
+        }
+      ]
+    );
+  };
 
 
   return (
@@ -65,10 +82,29 @@ export default function App() {
         />
       <View style={styles.bottomView}>
         <FlatList
+          ListHeaderComponent={
+            goals.length > 0 ? (
+              <View style={styles.listHeader}>
+                <Text style={styles.listHeaderText}>My Goal List</Text>
+              </View>
+            ) : null
+          }
           ListEmptyComponent={    
-          <View style={styles.emptyListContainer}>
-            <Text style={styles.emptyListText}>No goals to show</Text>
-          </View>}
+            <View style={styles.emptyListContainer}>
+              <Text style={styles.emptyListText}>No goals to show</Text>
+            </View>
+          }
+          ListFooterComponent={
+            goals.length > 0 ? (
+              <View style={styles.listFooter}>
+                <Button 
+                  title="Delete All" 
+                  onPress={handleDeleteAll}
+                  // color="blue"
+                />
+              </View>
+            ) : null
+          }
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
           renderItem={({ item }) => {
@@ -114,12 +150,16 @@ const styles = StyleSheet.create({
     // alignItems: "center",
   },
   emptyListContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     marginTop: 10,
   },
   emptyListText: {
+    color: 'purple',
+    fontSize: 18,
+  },
+  listHeader: {
+    marginTop: 10,
+  },
+  listHeaderText: {
     color: 'purple',
     fontSize: 18,
   },

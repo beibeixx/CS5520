@@ -18,8 +18,8 @@ export default function Input({
   cancelHandler,
 }) {
   const [text, setText] = useState("");
-  const [focus, setFocus] = useState(false);
-  const [count, setCount] = useState(0);
+  const [blur, setBlur] = useState(false);
+  const minimumChar = 3;
   function handleConfirm() {
     inputHandler(text);
     setText("");
@@ -66,16 +66,18 @@ export default function Input({
             value={text}
             onChangeText={(changeText) => {
               setText(changeText);
-              setCount(changeText.length);
             }}
-            onFocus={() => setFocus(true)}
-            onBlur={() => setFocus(false)}
+            onFocus={() => setBlur(true)}
+            onBlur={() => setBlur(false)}
           />
-          {focus && count > 0 && <Text>{count}</Text>}
-          {!focus && count > 0 && (
-            <Text>
-              {count >= 3 ? "Thank you" : "Please type more than 3 characters"}
-            </Text>
+          {blur ? (
+            text.length >= minimumChar ? (
+              <Text>Thank you</Text>
+            ) : (
+              <Text>Please type more than {minimumChar} characters</Text>
+            )
+          ) : (
+            text && <Text>{text.length}</Text>
           )}
           <View style={styles.buttonsRow}>
             <View style={styles.buttonContainer}>
@@ -83,7 +85,7 @@ export default function Input({
               <Button
                 title="Confirm"
                 onPress={handleConfirm}
-                disabled={count < 3}
+                disabled={text.length < minimumChar}
               />
             </View>
           </View>

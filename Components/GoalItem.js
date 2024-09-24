@@ -16,13 +16,13 @@ export default function GoalItem({ goal, deleteHandler }) {
 const styles = StyleSheet.create({
   text: {
     color: "purple",
-    padding: 5,
-    fontSize: 30,
+    padding: 10,
+    fontSize: 20,
   },
   textContainer: {
     backgroundColor: "#aaa",
     borderRadius: 5,
-    marginTop: 50,
+    marginTop: 10,
     // height: 100,
     flexDirection:"row",
     alignItems:"center",
