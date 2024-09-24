@@ -48,6 +48,8 @@ export default function App() {
     })
   };
 
+
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -63,6 +65,10 @@ export default function App() {
         />
       <View style={styles.bottomView}>
         <FlatList
+          ListEmptyComponent={    
+          <View style={styles.emptyListContainer}>
+            <Text style={styles.emptyListText}>No goals to show</Text>
+          </View>}
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
           renderItem={({ item }) => {
@@ -106,5 +112,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#dcd",
     flex: 4,
     // alignItems: "center",
+  },
+  emptyListContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  emptyListText: {
+    color: 'purple',
+    fontSize: 18,
   },
 });
