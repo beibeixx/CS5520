@@ -163,4 +163,8 @@ const styles = StyleSheet.create({
     color: 'purple',
     fontSize: 18,
   },
+  listFooter: {
+    padding: 10,
+    marginTop: 10,
+  },
 });
