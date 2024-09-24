@@ -15,10 +15,15 @@ export default function App() {
   const appName = "My app";
   const [receivedData, setReceivedData] = useState("");
   const [visible, setVisible] = useState(false);
+  const [goals, setGoals] = useState([]);
 
   const handleInputData = (data) => {
     console.log("App.js", data);
-    setReceivedData(data);
+    let newGoal={text:data, id: Math.random()};
+    setGoals((prebGoals) => {
+      return[...prebGoals, newGoal]
+    });
+    // setReceivedData(data);
     setVisible(false);
   };
 
@@ -39,7 +44,7 @@ export default function App() {
         />
       </View>
       <View style={styles.bottomView}>
-        <Text style={styles.text}>{receivedData} </Text>
+        {/* <Text style={styles.text}>{receivedData} </Text> */}
       </View>
     </SafeAreaView>
   );
