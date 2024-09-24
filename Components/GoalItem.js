@@ -15,8 +15,9 @@ export default function GoalItem({ goal, deleteHandler }) {
 
 const styles = StyleSheet.create({
   text: {
-    color: "white",
-    fontSize: 15,
+    color: "purple",
+    padding: 5,
+    fontSize: 30,
   },
   textContainer: {
     backgroundColor: "#aaa",

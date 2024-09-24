@@ -54,13 +54,13 @@ export default function App() {
       <View style={styles.topView}>
         <Header name={appName} />
         <Button title="Add a Goal" onPress={() => setVisible(true)} />
-        <Input
+      </View>
+      <Input
           textInputFocus={true}
           inputHandler={handleInputData}
           cancelHandler={handleCancel}
           visibility={visible}
         />
-      </View>
       <View style={styles.bottomView}>
         <FlatList
           contentContainerStyle={styles.scrollViewContainer}
@@ -88,7 +88,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#fff",
+    backgroundColor: "#fff",
     // alignItems: 'center',
     justifyContent: "center",
   },
@@ -102,8 +102,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   bottomView: {
-    color: "white",
-    backgroundColor: "darkblue",
+    // color: "white",
+    backgroundColor: "#dcd",
     flex: 4,
     // alignItems: "center",
   },
