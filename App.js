@@ -6,6 +6,7 @@ import {
   View,
   Button,
   SafeAreaView,
+  ScrollView,
 } from "react-native";
 import Header from "./Components/Header";
 import Input from "./Components/Input";
@@ -19,9 +20,9 @@ export default function App() {
 
   const handleInputData = (data) => {
     console.log("App.js", data);
-    let newGoal={text:data, id: Math.random()};
+    let newGoal = { text: data, id: Math.random() };
     setGoals((prebGoals) => {
-      return[...prebGoals, newGoal]
+      return [...prebGoals, newGoal];
     });
     // setReceivedData(data);
     setVisible(false);
@@ -44,7 +45,18 @@ export default function App() {
         />
       </View>
       <View style={styles.bottomView}>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+
+        {goals.map((goal) => {
+          return (
+            <View key={goal.id} style={styles.textContainer}>
+              <Text style={styles.text}>{goal.text}</Text>
+            </View>
+          );
+        })}
         {/* <Text style={styles.text}>{receivedData} </Text> */}
+        </ScrollView>
+
       </View>
     </SafeAreaView>
   );
@@ -53,13 +65,21 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    // backgroundColor: "#fff",
     // alignItems: 'center',
     justifyContent: "center",
+  },
+  scrollViewContainer:{
+    alignItems: "center",
   },
   text: {
     color: "white",
     fontSize: 15,
+  },
+  textContainer: {
+    backgroundColor: "#aaa",
+    borderRadius: 5,
+    marginTop: 50,
   },
   topView: {
     flex: 1,
@@ -70,6 +90,6 @@ const styles = StyleSheet.create({
     color: "white",
     backgroundColor: "darkblue",
     flex: 4,
-    alignItems: "center",
+    // alignItems: "center",
   },
 });
