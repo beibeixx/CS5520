@@ -82,10 +82,13 @@ export default function App() {
         />
       <View style={styles.bottomView}>
         <FlatList
+          ItemSeparatorComponent={
+            <View style={styles.separator} />
+          }
           ListHeaderComponent={
             goals.length > 0 ? (
               <View style={styles.listHeader}>
-                <Text style={styles.listHeaderText}>My Goal List</Text>
+                <Text style={styles.listHeaderText}>My Goals</Text>
               </View>
             ) : null
           }
@@ -100,7 +103,6 @@ export default function App() {
                 <Button 
                   title="Delete All" 
                   onPress={handleDeleteAll}
-                  // color="blue"
                 />
               </View>
             ) : null
@@ -137,7 +139,6 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     alignItems: "center",
   },
-
   topView: {
     flex: 1,
     alignItems: "center",
@@ -154,17 +155,21 @@ const styles = StyleSheet.create({
   },
   emptyListText: {
     color: 'purple',
-    fontSize: 18,
+    fontSize: 22,
   },
   listHeader: {
     marginTop: 10,
   },
   listHeaderText: {
     color: 'purple',
-    fontSize: 18,
+    fontSize: 22,
   },
   listFooter: {
     padding: 10,
     marginTop: 10,
+  },
+  separator: {
+    height: 5,
+    backgroundColor: 'grey',
   },
 });

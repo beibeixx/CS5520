@@ -22,8 +22,7 @@ const styles = StyleSheet.create({
   textContainer: {
     backgroundColor: "#aaa",
     borderRadius: 5,
-    marginTop: 10,
-    // height: 100,
+    margin: 20,
     flexDirection:"row",
     alignItems:"center",
   },
