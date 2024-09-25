@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   separator: {
-    height: 5,
+    height: 3,
     backgroundColor: 'grey',
   },
 });
