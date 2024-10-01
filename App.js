@@ -19,10 +19,10 @@ export default function App() {
             headerStyle: {
               backgroundColor: "purple",
             },
-            headerTitleStyle: {
-              color: "#f4511e",
-            },
-            headerTintColor: "white",
+            // headerTitleStyle: {
+            //   color: "#f4511e",
+            // },
+            headerTintColor: "white", //both back button and title
           }}
         />
         <Stack.Screen
