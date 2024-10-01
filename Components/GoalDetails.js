@@ -3,16 +3,14 @@ import React from 'react'
 
 export default function GoalDetails({ navigation, route}) {
 
-    console.log(route)
     function moreDetailsHandler(){
         navigation.push('Details')
     }
   return (
     <View>
         {route.params ? (
-        <View>
-            <Text>{route.params.goalData.text}</Text>
-        </View>) : (
+            <Text>Goal is {route.params.goalData.text} and its id is {route.params.goalData.id}</Text>
+        ) : (
             <Text>More Details</Text>
         )
         }
