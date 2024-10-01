@@ -16,7 +16,7 @@ import React, { useState } from "react";
 import GoalItem from "./GoalItem";
 
 
-export default function Home({ navigation}) {
+export default function Home({ navigation, route}) {
   const appName = "My app";
   const [receivedData, setReceivedData] = useState("");
   const [visible, setVisible] = useState(false);
@@ -67,10 +67,13 @@ export default function Home({ navigation}) {
     );
   };
 
-  function handleGoPress() {
-    navigation.navigate('Details');
-  }
-  
+
+  const handleGoPress = (pressedGoal) => {
+    console.log(pressedGoal)
+    navigation.navigate('Details', {goalData: pressedGoal});
+    
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
