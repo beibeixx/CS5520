@@ -68,12 +68,6 @@ export default function Home({ navigation, route}) {
   };
 
 
-  const handleGoPress = (pressedGoal) => {
-    console.log(pressedGoal)
-    navigation.navigate('Details', {goalData: pressedGoal});
-    
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -117,7 +111,7 @@ export default function Home({ navigation, route}) {
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
           renderItem={({ item }) => {
-            return <GoalItem goal={item} deleteHandler={handleGoalDelete} pressHandler={handleGoPress} />;
+            return <GoalItem goal={item} deleteHandler={handleGoalDelete} navigation={navigation} />;
           }}
         ></FlatList>
         {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
