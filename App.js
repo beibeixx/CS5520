@@ -11,34 +11,37 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            title: "My Goals",
+        <Stack.Group
+          screenOptions={{
             headerStyle: {
               backgroundColor: "purple",
             },
-            // headerTitleStyle: {
-            //   color: "#f4511e",
-            // },
-            headerTintColor: "white", //both back button and title
+            headerTintColor: "white",
           }}
-        />
-        <Stack.Screen
-          name="Details"
-          component={GoalDetails}
-          options={({ route }) => ({
-            title: route.params ? route.params.goalData.text : "More details",
-            headerRight: () => {
-              return <Button title="Warning"
-              onPress={ () => {
-                console.log("warning")
-              }}></Button>
-            }
-    
-          })}
-        />
+        >
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{ title: "My Goals" }}
+          />
+          <Stack.Screen
+            name="Details"
+            component={GoalDetails}
+            options={({ route }) => ({
+              title: route.params ? route.params.goalData.text : "More details",
+              headerRight: () => {
+                return (
+                  <Button
+                    title="Warning"
+                    onPress={() => {
+                      console.log("warning");
+                    }}
+                  ></Button>
+                );
+              },
+            })}
+          />
+        </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
   );
