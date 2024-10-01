@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
+  Alert,
 } from "react-native";
 import Header from "./Components/Header";
 import Input from "./Components/Input";
@@ -48,6 +49,24 @@ export default function App() {
     })
   };
 
+  const handleDeleteAll = () => {
+    Alert.alert(
+      "Delete All Goals",
+      "Are you sure you want to delete all goals?",
+      [
+        {
+          text: "No",
+          style: "cancel"
+        },
+        {
+          text: "Yes",
+          onPress: () => setGoals([])
+        }
+      ]
+    );
+  };
+
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -63,6 +82,31 @@ export default function App() {
         />
       <View style={styles.bottomView}>
         <FlatList
+          ItemSeparatorComponent={
+            <View style={styles.separator} />
+          }
+          ListHeaderComponent={
+            goals.length > 0 ? (
+              <View style={styles.listHeader}>
+                <Text style={styles.listHeaderText}>My Goals</Text>
+              </View>
+            ) : null
+          }
+          ListEmptyComponent={    
+            <View style={styles.emptyListContainer}>
+              <Text style={styles.emptyListText}>No goals to show</Text>
+            </View>
+          }
+          ListFooterComponent={
+            goals.length > 0 ? (
+              <View style={styles.listFooter}>
+                <Button 
+                  title="Delete All" 
+                  onPress={handleDeleteAll}
+                />
+              </View>
+            ) : null
+          }
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
           renderItem={({ item }) => {
@@ -95,7 +139,6 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     alignItems: "center",
   },
-
   topView: {
     flex: 1,
     alignItems: "center",
@@ -106,5 +149,27 @@ const styles = StyleSheet.create({
     backgroundColor: "#dcd",
     flex: 4,
     // alignItems: "center",
+  },
+  emptyListContainer: {
+    marginTop: 10,
+  },
+  emptyListText: {
+    color: 'purple',
+    fontSize: 22,
+  },
+  listHeader: {
+    marginTop: 10,
+  },
+  listHeaderText: {
+    color: 'purple',
+    fontSize: 22,
+  },
+  listFooter: {
+    padding: 10,
+    marginTop: 10,
+  },
+  separator: {
+    height: 3,
+    backgroundColor: 'grey',
   },
 });
