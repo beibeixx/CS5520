@@ -15,7 +15,8 @@ import Input from "./Input";
 import React, { useState } from "react";
 import GoalItem from "./GoalItem";
 
-export default function Home() {
+
+export default function Home({ navigation}) {
   const appName = "My app";
   const [receivedData, setReceivedData] = useState("");
   const [visible, setVisible] = useState(false);
@@ -66,7 +67,10 @@ export default function Home() {
     );
   };
 
-
+  function handleGoPress() {
+    navigation.navigate('Details');
+  }
+  
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -110,7 +114,7 @@ export default function Home() {
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
           renderItem={({ item }) => {
-            return <GoalItem goal={item} deleteHandler={handleGoalDelete} />;
+            return <GoalItem goal={item} deleteHandler={handleGoalDelete} pressHandler={handleGoPress} />;
           }}
         ></FlatList>
         {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
