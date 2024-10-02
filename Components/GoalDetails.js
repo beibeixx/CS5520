@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View, Button } from "react-native";
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function GoalDetails({ navigation, route }) {
   const [isWarning, setIsWarning] = useState(false);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <Button
