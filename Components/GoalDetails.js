@@ -10,7 +10,8 @@ export default function GoalDetails({ navigation, route }) {
         <Button
           title="Warning"
           onPress={() => {
-            setIsWarning((prevState) => !prevState);
+            // setIsWarning((prevState) => !prevState);
+            setIsWarning(true);
             navigation.setOptions({
               title: isWarning
                 ? route.params
