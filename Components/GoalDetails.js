@@ -1,29 +1,29 @@
 import { StyleSheet, Text, View, Button } from "react-native";
 import React, { useState, useEffect } from "react";
+import Ionicons from '@expo/vector-icons/Ionicons';
+import PressableButton from "./PressableButton";
 
 export default function GoalDetails({ navigation, route }) {
   const [isWarning, setIsWarning] = useState(false);
 
+  function warningHandler() {
+    setIsWarning(true);
+    navigation.setOptions({ title: "Warning!" });
+  }
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button
-          title="Warning"
-          onPress={() => {
-            // setIsWarning((prevState) => !prevState);
-            setIsWarning(true);
-            navigation.setOptions({
-              title: isWarning
-                ? route.params
-                  ? route.params.goalData.text
-                  : "More details"
-                : "Warning!",
-            });
-          }}
-        />
+        // <Button title="Warning" color="white" onPress={warningHandler} />
+        <PressableButton
+          compoentStyle={styles.iconStyle}
+          pressedHandler={warningHandler}
+        >
+          <Ionicons name="warning" size={24} color="black" />
+        </PressableButton>
       ),
     });
-  }, [navigation]);
+  }, []);
 
   function moreDetailsHandler() {
     navigation.push("Details");
@@ -47,4 +47,8 @@ const styles = StyleSheet.create({
   warning: {
     color: "red",
   },
+  iconStyle: {
+    backgroundColor: "red",
+    opacity: 0.5,
+  }
 });
