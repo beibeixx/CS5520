@@ -18,8 +18,10 @@ export default function PressableButton({ children, compoentStyle, pressedHandle
 const styles = StyleSheet.create({
     defaultStyle:{
         color: "purple",
+        padding: 5,
     },
     defaultPressedStyle: {
         color: "violet",
+        opacity: 0.2,
     }
 })

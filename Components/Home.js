@@ -14,6 +14,7 @@ import Header from "./Header";
 import Input from "./Input";
 import React, { useState } from "react";
 import GoalItem from "./GoalItem";
+import PressableButton from "./PressableButton";
 
 
 export default function Home({ navigation, route}) {
@@ -73,7 +74,14 @@ export default function Home({ navigation, route}) {
       <StatusBar style="auto" />
       <View style={styles.topView}>
         <Header name={appName} />
-        <Button title="Add a Goal" onPress={() => setVisible(true)} />
+        {/* <Button title="Add a Goal" onPress={() => setVisible(true)} /> */}
+        <PressableButton
+          compoentStyle={styles.addGoal}
+          pressedHandler={() => setVisible(true)}
+          pressedStyle={styles.pressedAddGoal}
+        >
+          <Text style={styles.buttonText}>Add a Goal</Text>
+        </PressableButton>
       </View>
       <Input
           textInputFocus={true}
@@ -173,4 +181,14 @@ const styles = StyleSheet.create({
     height: 3,
     backgroundColor: 'grey',
   },
+  addGoal: {
+    backgroundColor: "red",
+  },
+  pressedAddGoal: {
+    backgroundColor: "blue",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+  }
 });
