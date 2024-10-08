@@ -16,7 +16,7 @@ export default function GoalDetails({ navigation, route }) {
       headerRight: () => (
         // <Button title="Warning" color="white" onPress={warningHandler} />
         <PressableButton
-          compoentStyle={styles.iconStyle}
+          componentStyle={styles.iconStyle}
           pressedHandler={warningHandler}
         >
           <Ionicons name="warning" size={24} color="black" />
