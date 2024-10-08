@@ -92,7 +92,8 @@ export default function Home({ navigation, route}) {
       <View style={styles.bottomView}>
         <FlatList
           ItemSeparatorComponent={
-            <View style={styles.separator} />
+            ({highlighted}) => 
+            <View style={[styles.separator, highlighted && {backgroundColor:"blue"}]} />
           }
           ListHeaderComponent={
             goals.length > 0 ? (
@@ -118,8 +119,8 @@ export default function Home({ navigation, route}) {
           }
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
-          renderItem={({ item }) => {
-            return <GoalItem goal={item} deleteHandler={handleGoalDelete} navigation={navigation} />;
+          renderItem={({ item, separators }) => {
+            return <GoalItem goal={item} deleteHandler={handleGoalDelete} navigation={navigation} separators={separators}/>;
           }}
         ></FlatList>
         {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>

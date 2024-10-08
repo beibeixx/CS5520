@@ -3,7 +3,7 @@ import React from "react";
 import PressableButton from "./PressableButton";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-export default function GoalItem({ goal, deleteHandler, navigation }) {
+export default function GoalItem({ goal, deleteHandler, navigation, separators}) {
   function handleDelete() {
     deleteHandler(goal.id);
   }
@@ -14,11 +14,11 @@ export default function GoalItem({ goal, deleteHandler, navigation }) {
 
   function handleLongPress() {
     Alert.alert(
-      "Delete Goal",
+      "Delete",
       "Are you sure you want to delete this goal?",
       [
         {
-          text: "Cancel",
+          text: "No",
           style: "cancel"
         },
         { 
@@ -39,6 +39,8 @@ export default function GoalItem({ goal, deleteHandler, navigation }) {
         }}
         android_ripple={{ color: "red", radius: 10 }}
         onLongPress={handleLongPress}
+        onPressIn={() => separators.highlight()}
+        onPressOut={() => separators.unhighlight()}
       >
         <Text style={styles.text}>{goal.text}</Text>
         <PressableButton
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
   },
   pressedStyle: {
     opacity: 0.5,
-    backgroundColor: "blue",
+    backgroundColor: "pink",
   },
   deleteButton: {
     backgroundColor: "yellow",
