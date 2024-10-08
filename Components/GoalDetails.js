@@ -4,26 +4,18 @@ import React, { useState, useEffect } from "react";
 export default function GoalDetails({ navigation, route }) {
   const [isWarning, setIsWarning] = useState(false);
 
+  function warningHandler() {
+    setIsWarning(true);
+    navigation.setOptions({ title: "Warning!" });
+  }
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button
-          title="Warning"
-          onPress={() => {
-            // setIsWarning((prevState) => !prevState);
-            setIsWarning(true);
-            navigation.setOptions({
-              title: isWarning
-                ? route.params
-                  ? route.params.goalData.text
-                  : "More details"
-                : "Warning!",
-            });
-          }}
-        />
+        <Button title="Warning" color="white" onPress={warningHandler} />
       ),
     });
-  }, [navigation]);
+  }, []);
 
   function moreDetailsHandler() {
     navigation.push("Details");
