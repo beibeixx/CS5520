@@ -76,7 +76,7 @@ export default function Home({ navigation, route}) {
         <Header name={appName} />
         {/* <Button title="Add a Goal" onPress={() => setVisible(true)} /> */}
         <PressableButton
-          compoentStyle={styles.addGoal}
+          componentStyle={styles.addGoal}
           pressedHandler={() => setVisible(true)}
           pressedStyle={styles.pressedAddGoal}
         >

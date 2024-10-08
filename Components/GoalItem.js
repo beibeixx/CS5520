@@ -21,7 +21,7 @@ export default function GoalItem({ goal, deleteHandler, navigation }) {
       android_ripple={{color: 'red', radius: 10}}>
         <Text style={styles.text}>{goal.text}</Text>
         <PressableButton
-          compoentStyle={styles.deleteButton}
+          componentStyle={styles.deleteButton}
           pressedHandler={handleDelete}
           pressedStyle={styles.pressedStyle}
         >

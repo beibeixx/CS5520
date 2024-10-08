@@ -3,19 +3,21 @@ import React from "react";
 
 export default function PressableButton({
   children,
-  compoentStyle,
+  componentStyle,
   pressedHandler,
+  longPressedHandler,
   pressedStyle,
 }) {
   return (
     <Pressable
       style={({ pressed }) => [
         styles.defaultStyle,
-        compoentStyle,
+        componentStyle,
         pressed && styles.defaultPressedStyle,
         pressed && pressedStyle,
       ]}
       onPress={pressedHandler}
+      onLongPress={longPressedHandler}
     >
       <View>{children}</View>
     </Pressable>
