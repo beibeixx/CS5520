@@ -1,22 +1,50 @@
-import { StyleSheet, Text, View, Button } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Button } from "react-native";
+import React, { useState, useEffect } from "react";
 
-export default function GoalDetails({ navigation, route}) {
+export default function GoalDetails({ navigation, route }) {
+  const [isWarning, setIsWarning] = useState(false);
 
-    function moreDetailsHandler(){
-        navigation.push('Details')
-    }
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          title="Warning"
+          onPress={() => {
+            // setIsWarning((prevState) => !prevState);
+            setIsWarning(true);
+            navigation.setOptions({
+              title: isWarning
+                ? route.params
+                  ? route.params.goalData.text
+                  : "More details"
+                : "Warning!",
+            });
+          }}
+        />
+      ),
+    });
+  }, [navigation]);
+
+  function moreDetailsHandler() {
+    navigation.push("Details");
+  }
   return (
     <View>
-        {route.params ? (
-            <Text>Goal is {route.params.goalData.text} and its id is {route.params.goalData.id}</Text>
-        ) : (
-            <Text>More Details</Text>
-        )
-        }
-        <Button title="More Details" onPress={moreDetailsHandler}></Button>
+      {route.params ? (
+        <Text style={isWarning && styles.warning}>
+          Goal is {route.params.goalData.text} and its id is{" "}
+          {route.params.goalData.id}
+        </Text>
+      ) : (
+        <Text style={isWarning && styles.warning}>More Details</Text>
+      )}
+      <Button title="More Details" onPress={moreDetailsHandler}></Button>
     </View>
-  )
+  );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  warning: {
+    color: "red",
+  },
+});
