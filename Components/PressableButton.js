@@ -5,7 +5,6 @@ export default function PressableButton({
   children,
   componentStyle,
   pressedHandler,
-  longPressedHandler,
   pressedStyle,
 }) {
   return (
@@ -17,7 +16,6 @@ export default function PressableButton({
         pressed && pressedStyle,
       ]}
       onPress={pressedHandler}
-      onLongPress={longPressedHandler}
     >
       <View>{children}</View>
     </Pressable>
