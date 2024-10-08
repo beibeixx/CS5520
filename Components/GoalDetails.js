@@ -1,5 +1,7 @@
 import { StyleSheet, Text, View, Button } from "react-native";
 import React, { useState, useEffect } from "react";
+import Ionicons from '@expo/vector-icons/Ionicons';
+import PressableButton from "./PressableButton";
 
 export default function GoalDetails({ navigation, route }) {
   const [isWarning, setIsWarning] = useState(false);
@@ -12,7 +14,13 @@ export default function GoalDetails({ navigation, route }) {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button title="Warning" color="white" onPress={warningHandler} />
+        // <Button title="Warning" color="white" onPress={warningHandler} />
+        <PressableButton
+          compoentStyle={styles.iconStyle}
+          pressedHandler={warningHandler}
+        >
+          <Ionicons name="warning" size={24} color="black" />
+        </PressableButton>
       ),
     });
   }, []);
@@ -39,4 +47,8 @@ const styles = StyleSheet.create({
   warning: {
     color: "red",
   },
+  iconStyle: {
+    backgroundColor: "red",
+    opacity: 0.5,
+  }
 });
