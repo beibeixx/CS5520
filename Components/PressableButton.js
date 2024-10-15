@@ -3,7 +3,7 @@ import React from "react";
 
 export default function PressableButton({
   children,
-  compoentStyle,
+  componentStyle,
   pressedHandler,
   pressedStyle,
 }) {
@@ -11,7 +11,7 @@ export default function PressableButton({
     <Pressable
       style={({ pressed }) => [
         styles.defaultStyle,
-        compoentStyle,
+        componentStyle,
         pressed && styles.defaultPressedStyle,
         pressed && pressedStyle,
       ]}
