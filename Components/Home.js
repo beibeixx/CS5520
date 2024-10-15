@@ -16,7 +16,11 @@ import React, { useState, useEffect } from "react";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
 import { database } from "../Firebase/fireBaseSetup";
-import { writeToDB } from "../Firebase/firestoreHelper";
+import {
+  deleteAllFromDB,
+  deleteFromDB,
+  writeToDB,
+} from "../Firebase/firestoreHelper";
 import { onSnapshot } from "firebase/firestore";
 import { collection } from "firebase/firestore";
 
@@ -32,19 +36,17 @@ export default function Home({ navigation, route }) {
       let newArray = [];
       querySnapshot.forEach((docSnapshot) => {
         console.log(docSnapshot.id);
-        newArray.push({...docSnapshot.data(), id:docSnapshot.id});
+        newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
       });
       setGoals(newArray);
-      console.log(newArray)
+      console.log(newArray);
     });
   }, []);
 
   const handleInputData = (data) => {
     console.log("App.js", data);
     let newGoal = { text: data };
-
     writeToDB(newGoal, "goals");
-
     // setGoals((prebGoals) => {
     //   return [...prebGoals, newGoal];
     // });
@@ -63,11 +65,12 @@ export default function Home({ navigation, route }) {
     // setGoals(newGoals);
     console.log(deletedId);
 
-    setGoals((prebGoals) => {
-      return prebGoals.filter((goalObj) => {
-        return goalObj.id != deletedId;
-      });
-    });
+    // setGoals((prebGoals) => {
+    //   return prebGoals.filter((goalObj) => {
+    //     return goalObj.id != deletedId;
+    //   });
+    // });
+    deleteFromDB(deletedId, "goals");
   };
 
   const handleDeleteAll = () => {
@@ -81,7 +84,8 @@ export default function Home({ navigation, route }) {
         },
         {
           text: "Yes",
-          onPress: () => setGoals([]),
+          // onPress: () => setGoals([]),
+          onPress: () => deleteAllFromDB("goals"),
         },
       ]
     );
