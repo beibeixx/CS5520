@@ -12,23 +12,42 @@ import {
 } from "react-native";
 import Header from "./Header";
 import Input from "./Input";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
+import { database } from "../Firebase/fireBaseSetup";
+import { writeToDB } from "../Firebase/firestoreHelper";
+import { onSnapshot } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 
-
-export default function Home({ navigation, route}) {
+export default function Home({ navigation, route }) {
+  // console.log(database);
   const appName = "My app";
   const [receivedData, setReceivedData] = useState("");
   const [visible, setVisible] = useState(false);
   const [goals, setGoals] = useState([]);
 
+  useEffect(() => {
+    onSnapshot(collection(database, "goals"), (querySnapshot) => {
+      let newArray = [];
+      querySnapshot.forEach((docSnapshot) => {
+        console.log(docSnapshot.id);
+        newArray.push({...docSnapshot.data(), id:docSnapshot.id});
+      });
+      setGoals(newArray);
+      console.log(newArray)
+    });
+  }, []);
+
   const handleInputData = (data) => {
     console.log("App.js", data);
-    let newGoal = { text: data, id: Math.random() };
-    setGoals((prebGoals) => {
-      return [...prebGoals, newGoal];
-    });
+    let newGoal = { text: data };
+
+    writeToDB(newGoal, "goals");
+
+    // setGoals((prebGoals) => {
+    //   return [...prebGoals, newGoal];
+    // });
     // setReceivedData(data);
     setVisible(false);
   };
@@ -42,13 +61,13 @@ export default function Home({ navigation, route}) {
     //   return goalObj.id != deleteId;
     // });
     // setGoals(newGoals);
-    console.log(deletedId)
+    console.log(deletedId);
 
     setGoals((prebGoals) => {
       return prebGoals.filter((goalObj) => {
         return goalObj.id != deletedId;
-      })
-    })
+      });
+    });
   };
 
   const handleDeleteAll = () => {
@@ -58,16 +77,15 @@ export default function Home({ navigation, route}) {
       [
         {
           text: "No",
-          style: "cancel"
+          style: "cancel",
         },
         {
           text: "Yes",
-          onPress: () => setGoals([])
-        }
+          onPress: () => setGoals([]),
+        },
       ]
     );
   };
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -84,17 +102,21 @@ export default function Home({ navigation, route}) {
         </PressableButton>
       </View>
       <Input
-          textInputFocus={true}
-          inputHandler={handleInputData}
-          cancelHandler={handleCancel}
-          visibility={visible}
-        />
+        textInputFocus={true}
+        inputHandler={handleInputData}
+        cancelHandler={handleCancel}
+        visibility={visible}
+      />
       <View style={styles.bottomView}>
         <FlatList
-          ItemSeparatorComponent={
-            ({highlighted}) => 
-            <View style={[styles.separator, highlighted && {backgroundColor:"blue"}]} />
-          }
+          ItemSeparatorComponent={({ highlighted }) => (
+            <View
+              style={[
+                styles.separator,
+                highlighted && { backgroundColor: "blue" },
+              ]}
+            />
+          )}
           ListHeaderComponent={
             goals.length > 0 ? (
               <View style={styles.listHeader}>
@@ -102,7 +124,7 @@ export default function Home({ navigation, route}) {
               </View>
             ) : null
           }
-          ListEmptyComponent={    
+          ListEmptyComponent={
             <View style={styles.emptyListContainer}>
               <Text style={styles.emptyListText}>No goals to show</Text>
             </View>
@@ -110,17 +132,21 @@ export default function Home({ navigation, route}) {
           ListFooterComponent={
             goals.length > 0 ? (
               <View style={styles.listFooter}>
-                <Button 
-                  title="Delete All" 
-                  onPress={handleDeleteAll}
-                />
+                <Button title="Delete All" onPress={handleDeleteAll} />
               </View>
             ) : null
           }
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
           renderItem={({ item, separators }) => {
-            return <GoalItem goal={item} deleteHandler={handleGoalDelete} navigation={navigation} separators={separators}/>;
+            return (
+              <GoalItem
+                goal={item}
+                deleteHandler={handleGoalDelete}
+                navigation={navigation}
+                separators={separators}
+              />
+            );
           }}
         ></FlatList>
         {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -164,14 +190,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   emptyListText: {
-    color: 'purple',
+    color: "purple",
     fontSize: 22,
   },
   listHeader: {
     marginTop: 10,
   },
   listHeaderText: {
-    color: 'purple',
+    color: "purple",
     fontSize: 22,
   },
   listFooter: {
@@ -180,7 +206,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: 3,
-    backgroundColor: 'grey',
+    backgroundColor: "grey",
   },
   addGoal: {
     backgroundColor: "red",
@@ -191,5 +217,5 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 18,
-  }
+  },
 });
