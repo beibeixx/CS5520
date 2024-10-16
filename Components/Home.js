@@ -32,7 +32,7 @@ export default function Home({ navigation, route }) {
   const [goals, setGoals] = useState([]);
 
   useEffect(() => {
-    onSnapshot(collection(database, "goals"), (querySnapshot) => {
+    const listerToFirebase = onSnapshot(collection(database, "goals"), (querySnapshot) => {
       let newArray = [];
       querySnapshot.forEach((docSnapshot) => {
         console.log(docSnapshot.id);
@@ -41,6 +41,8 @@ export default function Home({ navigation, route }) {
       setGoals(newArray);
       console.log(newArray);
     });
+
+    return () => listerToFirebase();
   }, []);
 
   const handleInputData = (data) => {
