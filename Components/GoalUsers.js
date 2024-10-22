@@ -6,13 +6,22 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { writeToDB } from "../Firebase/firestoreHelper";
+import { getAllDocuments, writeToDB } from "../Firebase/firestoreHelper";
 
-export default function GoalUsers({id}) {
+export default function GoalUsers({ id }) {
   const [users, setUsers] = useState([]);
   useEffect(() => {
     async function fetchData() {
       try {
+        const dataFromDB = await getAllDocuments(`goals/${id}/users`);
+        if (dataFromDB.length) {
+          setUsers(
+            dataFromDB.map((users) => {
+              return users.name;
+            })
+          );
+          return;
+        }
         const response = await fetch(
           "https://jsonplaceholder.typicode.com/users"
         );
@@ -21,10 +30,8 @@ export default function GoalUsers({id}) {
         }
         const data = await response.json();
         data.map((user) => {
-            writeToDB(user, `goals/${id}/users`)
-
-        })
-
+          writeToDB(user, `goals/${id}/users`);
+        });
         setUsers(
           data.map((users) => {
             return users.name;
@@ -39,9 +46,12 @@ export default function GoalUsers({id}) {
 
   return (
     <View>
-      <FlatList data={users} renderItem={({item}) => {
-        return <Text>{item}</Text>
-      }}/>
+      <FlatList
+        data={users}
+        renderItem={({ item }) => {
+          return <Text>{item}</Text>;
+        }}
+      />
     </View>
   );
 }
