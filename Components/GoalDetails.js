@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import PressableButton from "./PressableButton";
 import { updateWarningInDB } from "../Firebase/firestoreHelper";
+import GoalUsers from "./GoalUsers";
 
 export default function GoalDetails({ navigation, route }) {
   const [isWarning, setIsWarning] = useState(false);
@@ -44,6 +45,7 @@ export default function GoalDetails({ navigation, route }) {
         <Text style={isWarning && styles.warning}>More Details</Text>
       )}
       <Button title="More Details" onPress={moreDetailsHandler}></Button>
+      <GoalUsers />
     </View>
   );
 }
