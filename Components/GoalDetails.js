@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Button } from "react-native";
 import React, { useState, useEffect } from "react";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import PressableButton from "./PressableButton";
+import { updateWarningInDB } from "../Firebase/firestoreHelper";
 
 export default function GoalDetails({ navigation, route }) {
   const [isWarning, setIsWarning] = useState(false);
@@ -9,6 +10,10 @@ export default function GoalDetails({ navigation, route }) {
   function warningHandler() {
     setIsWarning(true);
     navigation.setOptions({ title: "Warning!" });
+
+    if (route.params && route.params.goalData) {
+      updateWarningInDB(route.params.goalData.id, "goals");
+    }
   }
 
   useEffect(() => {
