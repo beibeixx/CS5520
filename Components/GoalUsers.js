@@ -6,8 +6,9 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
+import { writeToDB } from "../Firebase/firestoreHelper";
 
-export default function GoalUsers() {
+export default function GoalUsers({id}) {
   const [users, setUsers] = useState([]);
   useEffect(() => {
     async function fetchData() {
@@ -19,7 +20,11 @@ export default function GoalUsers() {
           throw new Error(`An HTTP error happened status: ${response.status}`);
         }
         const data = await response.json();
-        // console.log(data[0].name);
+        data.map((user) => {
+            writeToDB(user, `goals/${id}/users`)
+
+        })
+
         setUsers(
           data.map((users) => {
             return users.name;
