@@ -14,6 +14,7 @@ export async function writeToDB(data, collectionName) {
 export async function deleteFromDB(deletedId, collectionName) {
   try {
     await deleteDoc(doc(database, collectionName, deletedId));
+    deleteAllFromDB(`goals/${deletedId}/users`)
   } catch (err) {
     console.log(err);
   }
@@ -24,19 +25,34 @@ export async function deleteAllFromDB(collectionName) {
     const querySnapshot = await getDocs(collection(database, collectionName));
     querySnapshot.forEach((docSnapShot) => {
       deleteDoc(doc(database, collectionName, docSnapShot.id));
+      //needupdate
     });
   } catch (err) {
     console.log(err);
   }
 }
 
-
 export async function updateWarningInDB(goalId, collectionName) {
-    try {
-      await updateDoc(doc(database, collectionName, goalId), {
-        warning: true
-      });
-    } catch (err) {
-      console.log(err);
-    }
+  try {
+    await updateDoc(doc(database, collectionName, goalId), {
+      warning: true,
+    });
+  } catch (err) {
+    console.log(err);
   }
+}
+
+export async function getAllDocuments(collectionName) {
+  try {
+    const querySnapshot = await getDocs(collection(database, collectionName));
+    const data = [];
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach((docSnapShot) => {
+        data.push(docSnapShot.data());
+      });
+    }
+    return data;
+  } catch (err) {
+    console.log("get all docs", err);
+  }
+}
