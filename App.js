@@ -7,7 +7,11 @@ import GoalDetails from "./Components/GoalDetails";
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import { auth } from "./Firebase/fireBaseSetup";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import Profile from "./Components/Profile";
+import PressableButton from "./Components/PressableButton";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +26,21 @@ const AppStack = (
     <Stack.Screen
       name="Home"
       component={Home}
-      options={{ title: "My Goals" }}
+      options={({ navigation }) => {
+        return {
+          title: "My Goals",
+          headerRight: () => (
+            <PressableButton
+              componentStyle={{ backgroundColor: "purple" }}
+              pressedHandler={() => {
+                navigation.navigate("Profile");
+              }}
+            >
+              <MaterialIcons name="person-outline" size={24} color="white" />
+            </PressableButton>
+          ),
+        };
+      }}
     />
     <Stack.Screen
       name="Details"
@@ -30,6 +48,24 @@ const AppStack = (
       options={({ route }) => ({
         title: route.params ? route.params.goalData.text : "More details",
       })}
+    />
+    <Stack.Screen
+      name="Profile"
+      component={Profile}
+      options={({ navigation }) => {
+        return {
+          headerRight: () => (
+            <PressableButton
+              componentStyle={{ backgroundColor: "purple" }}
+              pressedHandler={() => {
+                signOut(auth);
+              }}
+            >
+              <AntDesign name="logout" size={24} color="white" />
+            </PressableButton>
+          ),
+        };
+      }}
     />
   </>
 );

@@ -9,6 +9,7 @@ import {
   ScrollView,
   FlatList,
   Alert,
+  Pressable
 } from "react-native";
 import Header from "./Header";
 import Input from "./Input";
@@ -23,6 +24,8 @@ import {
 } from "../Firebase/firestoreHelper";
 import { onSnapshot } from "firebase/firestore";
 import { collection } from "firebase/firestore";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+
 
 export default function Home({ navigation, route }) {
   // console.log(database);
@@ -44,6 +47,12 @@ export default function Home({ navigation, route }) {
 
     return () => listerToFirebase();
   }, []);
+
+
+
+  function handleProfile() {
+    navigation.navigate("Profile");
+  }
 
   const handleInputData = (data) => {
     console.log("App.js", data);
