@@ -1,6 +1,8 @@
 import { Button, StyleSheet, Text, View, TextInput } from "react-native";
 import React from "react";
 import { useState } from "react";
+import { signInWithCredential, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../Firebase/fireBaseSetup";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
@@ -10,23 +12,37 @@ export default function Login({ navigation }) {
     navigation.replace("Signup");
   };
 
-  const loginHandler = () => {
-    navigation.replace("Signup");
+  const loginHandler = async() => {
+
+        if (email.length === 0 || password.length === 0){
+          Alert.alert("All fields need to be filled")
+          return;
+        }
+
+        // any other check you could do to make we have balid date
+        // regex for email and password etc...
+        try { 
+
+        const userCred = await signInWithEmailAndPassword(auth, email, password)
+        console.log(userCred.user)
+      } catch(err){
+        console.log("login in error", err)
+      }
   };
-
-
 
   return (
     <View style={styles.container}>
-      <View style={styles.input}>
+      <View >
         <Text>Email</Text>
-        <TextInput
+        <TextInput style={styles.input}
           placeholder="email"
           value={email}
-          setValue={setEmail}
+          onChangeText={(changeText) => {
+            setEmail(changeText);
+          }}
         />
         <Text>Password</Text>
-        <TextInput
+        <TextInput style={styles.input}
           placeholder="password"
           value={password}
           secureTextEntry

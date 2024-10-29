@@ -1,42 +1,53 @@
-import { Button, StyleSheet, Text, View, TextInput } from "react-native";
+import { Button, StyleSheet, Text, View, TextInput, Alert } from "react-native";
 import React from "react";
 import { useState } from "react";
 import { auth } from "../Firebase/fireBaseSetup";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function Signup({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
 
   const loginHandler = () => {
     navigation.replace("Login");
   };
 
   const signupHandler = async() => {
-
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed up 
-      const user = userCredential.user;
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // ..
-    });
+    if (email.length === 0 || password.length === 0|| confirmPassword === 0){
+      Alert.alert("All fields need to be filled")
+      return;
+    }
+    if (password !== confirmPassword)  {
+      Alert.alert("Passwords did not match")
+      return;
+    }
+      // any other check you could do to make we have balid date
+      // regex for email and password etc...
+    try { 
+      const userCred = await createUserWithEmailAndPassword(auth, email, password)
+      console.log(userCred)
+    } catch(err){
+      console.log(err)
+    }
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.input}>
+      <View>
         <Text>Email</Text>
         <TextInput
+        style={styles.input}
           placeholder="email"
           value={email}
-          setValue={setEmail}
+          onChangeText={(changeText) => {
+            setEmail(changeText);
+          }}
         />
         <Text>Password</Text>
         <TextInput
+        style={styles.input}
           placeholder="password"
           value={password}
           secureTextEntry
@@ -45,15 +56,18 @@ export default function Signup({ navigation }) {
           }}
         />
 
-        <Text>Password</Text>
+        <Text>Confirm password</Text>
         <TextInput
+        style={styles.input}
           placeholder="password"
-          value={password}
+          value={confirmPassword}
           secureTextEntry
           onChangeText={(changeText) => {
-            setPassword(changeText);
+            setConfirmPassword(changeText);
           }}
         />
+
+
         <Button title="Register" onPress={signupHandler}></Button>
         <Button title="Go login" onPress={loginHandler}></Button>     
          </View>
