@@ -44,7 +44,7 @@ export default function Signup({ navigation }) {
   return (
     <View style={styles.container}>
       <View>
-        <Text>Email</Text>
+        <Text style={styles.label}>Email</Text>
         <TextInput
           style={styles.input}
           placeholder="email"
@@ -53,7 +53,7 @@ export default function Signup({ navigation }) {
             setEmail(changeText);
           }}
         />
-        <Text>Password</Text>
+        <Text style={styles.label}>Password</Text>
         <TextInput
           style={styles.input}
           placeholder="password"
@@ -64,7 +64,7 @@ export default function Signup({ navigation }) {
           }}
         />
 
-        <Text>Confirm password</Text>
+        <Text style={styles.label}>Confirm password</Text>
         <TextInput
           style={styles.input}
           placeholder="password"
@@ -84,13 +84,19 @@ export default function Signup({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    flex: 1,
+    backgroundColor: "#fff",
+    // alignItems: "stretch",
+    justifyContent: "center",
   },
   input: {
-    height: 40,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    marginBottom: 10,
-    paddingHorizontal: 10,
+    borderColor: "#552055",
+    borderWidth: 2,
+    width: "90%",
+    margin: 5,
+    padding: 5,
+  },
+  label: {
+    marginLeft: 10,
   },
 });
