@@ -9,45 +9,53 @@ export default function Signup({ navigation }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-
   const loginHandler = () => {
     navigation.replace("Login");
   };
 
-  const signupHandler = async() => {
-    if (email.length === 0 || password.length === 0|| confirmPassword === 0){
-      Alert.alert("All fields need to be filled")
-      return;
-    }
-    if (password !== confirmPassword)  {
-      Alert.alert("Passwords did not match")
-      return;
-    }
+  const signupHandler = async () => {
+    try {
+      if (
+        email.length === 0 ||
+        password.length === 0 ||
+        confirmPassword === 0
+      ) {
+        Alert.alert("All fields need to be filled");
+        return;
+      }
+      if (password !== confirmPassword) {
+        Alert.alert("Passwords did not match");
+        return;
+      }
       // any other check you could do to make we have balid date
       // regex for email and password etc...
-    try { 
-      const userCred = await createUserWithEmailAndPassword(auth, email, password)
-      console.log(userCred)
-    } catch(err){
-      console.log(err)
+      const userCred = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log(userCred.user);
+    } catch (err) {
+      console.log("sign up", err);
+      Alert.alert(err.message);
     }
   };
 
   return (
     <View style={styles.container}>
       <View>
-        <Text>Email</Text>
+        <Text style={styles.label}>Email</Text>
         <TextInput
-        style={styles.input}
+          style={styles.input}
           placeholder="email"
           value={email}
           onChangeText={(changeText) => {
             setEmail(changeText);
           }}
         />
-        <Text>Password</Text>
+        <Text style={styles.label}>Password</Text>
         <TextInput
-        style={styles.input}
+          style={styles.input}
           placeholder="password"
           value={password}
           secureTextEntry
@@ -56,9 +64,9 @@ export default function Signup({ navigation }) {
           }}
         />
 
-        <Text>Confirm password</Text>
+        <Text style={styles.label}>Confirm password</Text>
         <TextInput
-        style={styles.input}
+          style={styles.input}
           placeholder="password"
           value={confirmPassword}
           secureTextEntry
@@ -67,23 +75,28 @@ export default function Signup({ navigation }) {
           }}
         />
 
-
         <Button title="Register" onPress={signupHandler}></Button>
-        <Button title="Go login" onPress={loginHandler}></Button>     
-         </View>
+        <Button title="Go login" onPress={loginHandler}></Button>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    flex: 1,
+    backgroundColor: "#fff",
+    // alignItems: "stretch",
+    justifyContent: "center",
   },
   input: {
-    height: 40,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    marginBottom: 10,
-    paddingHorizontal: 10,
+    borderColor: "#552055",
+    borderWidth: 2,
+    width: "90%",
+    margin: 5,
+    padding: 5,
+  },
+  label: {
+    marginLeft: 10,
   },
 });
