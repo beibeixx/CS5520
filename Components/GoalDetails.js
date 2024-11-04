@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, Button } from "react-native";
 import React, { useState, useEffect } from "react";
-import Ionicons from '@expo/vector-icons/Ionicons';
+import Ionicons from "@expo/vector-icons/Ionicons";
 import PressableButton from "./PressableButton";
-import { updateWarningInDB } from "../Firebase/firestoreHelper";
+import { updateDB } from "../Firebase/firestoreHelper";
 import GoalUsers from "./GoalUsers";
 
 export default function GoalDetails({ navigation, route }) {
@@ -11,10 +11,7 @@ export default function GoalDetails({ navigation, route }) {
   function warningHandler() {
     setIsWarning(true);
     navigation.setOptions({ title: "Warning!" });
-
-    if (route.params && route.params.goalData) {
-      updateWarningInDB(route.params.goalData.id, "goals");
-    }
+    updateDB(route.params.goalData.id, { warning: true }, "goals");
   }
 
   useEffect(() => {
@@ -45,7 +42,7 @@ export default function GoalDetails({ navigation, route }) {
         <Text style={isWarning && styles.warning}>More Details</Text>
       )}
       <Button title="More Details" onPress={moreDetailsHandler}></Button>
-      <GoalUsers id={route.params.goalData.id}/>
+      <GoalUsers id={route.params.goalData.id} />
     </View>
   );
 }
@@ -57,5 +54,5 @@ const styles = StyleSheet.create({
   iconStyle: {
     backgroundColor: "red",
     opacity: 0.5,
-  }
+  },
 });
