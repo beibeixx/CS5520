@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, updateDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, setDoc } from "firebase/firestore";
 import { database } from "./fireBaseSetup";
 import { doc, deleteDoc } from "firebase/firestore";
 
@@ -32,13 +32,11 @@ export async function deleteAllFromDB(collectionName) {
   }
 }
 
-export async function updateWarningInDB(goalId, collectionName) {
+export async function updateDB(id, data, collectionName) {
   try {
-    await updateDoc(doc(database, collectionName, goalId), {
-      warning: true,
-    });
+    await setDoc(doc(database, collectionName, id), data, { merge: true });
   } catch (err) {
-    console.log(err);
+    console.log("update DB ", err);
   }
 }
 
