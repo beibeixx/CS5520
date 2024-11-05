@@ -66,9 +66,9 @@ export default function Home({ navigation, route }) {
 
   const handleInputData = (data) => {
     console.log("App.js", data);
-    let newGoal = { text: data };
+    let newGoal = { text: data.text };
     newGoal = { ...newGoal, owner: auth.currentUser.uid };
-    writeToDB(newGoal, "goals");
+    // writeToDB(newGoal, "goals");
     // setGoals((prebGoals) => {
     //   return [...prebGoals, newGoal];
     // });
