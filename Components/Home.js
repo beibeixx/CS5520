@@ -9,7 +9,7 @@ import {
   ScrollView,
   FlatList,
   Alert,
-  Pressable
+  Pressable,
 } from "react-native";
 import Header from "./Header";
 import Input from "./Input";
@@ -25,7 +25,9 @@ import {
 import { onSnapshot } from "firebase/firestore";
 import { collection } from "firebase/firestore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-
+import { auth } from "../Firebase/fireBaseSetup";
+import { query } from "firebase/firestore";
+import { where } from "firebase/firestore";
 
 export default function Home({ navigation, route }) {
   // console.log(database);
@@ -35,20 +37,28 @@ export default function Home({ navigation, route }) {
   const [goals, setGoals] = useState([]);
 
   useEffect(() => {
-    const listerToFirebase = onSnapshot(collection(database, "goals"), (querySnapshot) => {
-      let newArray = [];
-      querySnapshot.forEach((docSnapshot) => {
-        console.log(docSnapshot.id);
-        newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
-      });
-      setGoals(newArray);
-      console.log(newArray);
-    });
+    const listerToFirebase = onSnapshot(
+      query(
+        collection(database, "goals"),
+        where("owner", "==", auth.currentUser.uid)
+      ),
+      (querySnapshot) => {
+        let newArray = [];
+        querySnapshot.forEach((docSnapshot) => {
+          console.log(docSnapshot.id);
+          newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
+        });
+        setGoals(newArray);
+        console.log(newArray);
+      },
+      (err) => {
+        console.log(err);
+        Alert.alert(err.message);
+      }
+    );
 
     return () => listerToFirebase();
   }, []);
-
-
 
   function handleProfile() {
     navigation.navigate("Profile");
@@ -57,6 +67,7 @@ export default function Home({ navigation, route }) {
   const handleInputData = (data) => {
     console.log("App.js", data);
     let newGoal = { text: data };
+    newGoal = { ...newGoal, owner: auth.currentUser.uid };
     writeToDB(newGoal, "goals");
     // setGoals((prebGoals) => {
     //   return [...prebGoals, newGoal];
