@@ -6,12 +6,14 @@ import { updateWarningInDB } from "../Firebase/firestoreHelper";
 import GoalUsers from "./GoalUsers";
 import { auth } from "../Firebase/fireBaseSetup";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import LocationManager from "./LocationManager";
 
 export default function Profile({navigation}) {
   return (
     <View>
       <Text>{auth.currentUser.email}</Text>
       <Text>{auth.currentUser.uid}</Text>
+      <LocationManager/>
     </View>
   );
 }
