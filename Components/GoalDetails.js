@@ -4,9 +4,13 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import PressableButton from "./PressableButton";
 import { updateDB } from "../Firebase/firestoreHelper";
 import GoalUsers from "./GoalUsers";
+import { storage } from "../Firebase/fireBaseSetup";
+import { ref, getDownloadURL} from "firebase/storage";
 
 export default function GoalDetails({ navigation, route }) {
   const [isWarning, setIsWarning] = useState(false);
+
+  const imageRef = ref(storage, `images/${route.params.uri}`);
 
   function warningHandler() {
     setIsWarning(true);

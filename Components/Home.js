@@ -77,25 +77,24 @@ export default function Home({ navigation, route }) {
       const imageName = uri.substring(uri.lastIndexOf("/") + 1);
       const imageRef = ref(storage, `images/${imageName}`);
       const uploadResult = await uploadBytesResumable(imageRef, blob);
-      return uploadResult.metadata.fullpath;
+      return uploadResult.metadata.fullPath;
     } catch (err) {
       console.log("fetch And Upload Image", err);
     }
   };
 
-  const handleInputData = (data) => {
+  const handleInputData = async (data) => {
     console.log("App.js", data);
-    let uri = ""
+    let uri = "";
     if (data.imageUri) {
-      uri = fetchAndUploadImage(data.imageUri);
+      uri = await fetchAndUploadImage(data.imageUri);
     }
     let newGoal = { text: data.text };
     newGoal = { ...newGoal, owner: auth.currentUser.uid };
     if (uri) {
       newGoal = { ...newGoal, uri: uri };
-
     }
-    // writeToDB(newGoal, "goals");
+    writeToDB(newGoal, "goals");
     // setGoals((prebGoals) => {
     //   return [...prebGoals, newGoal];
     // });
