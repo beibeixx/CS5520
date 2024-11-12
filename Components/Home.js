@@ -28,6 +28,9 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { auth } from "../Firebase/fireBaseSetup";
 import { query } from "firebase/firestore";
 import { where } from "firebase/firestore";
+import { ref } from "firebase/storage";
+import { uploadBytesResumable } from "firebase/storage";
+import { storage } from "../Firebase/fireBaseSetup";
 
 export default function Home({ navigation, route }) {
   // console.log(database);
@@ -64,11 +67,34 @@ export default function Home({ navigation, route }) {
     navigation.navigate("Profile");
   }
 
-  const handleInputData = (data) => {
+  const fetchAndUploadImage = async (uri) => {
+    try {
+      const response = await fetch(uri);
+      if (!response.ok) {
+        throw new Error(`An HTTP error happened status: ${response.status}`);
+      }
+      const blob = await response.blob();
+      const imageName = uri.substring(uri.lastIndexOf("/") + 1);
+      const imageRef = ref(storage, `images/${imageName}`);
+      const uploadResult = await uploadBytesResumable(imageRef, blob);
+      return uploadResult.metadata.fullPath;
+    } catch (err) {
+      console.log("fetch And Upload Image", err);
+    }
+  };
+
+  const handleInputData = async (data) => {
     console.log("App.js", data);
+    let uri = "";
+    if (data.imageUri) {
+      uri = await fetchAndUploadImage(data.imageUri);
+    }
     let newGoal = { text: data.text };
     newGoal = { ...newGoal, owner: auth.currentUser.uid };
-    // writeToDB(newGoal, "goals");
+    if (uri) {
+      newGoal = { ...newGoal, uri: uri };
+    }
+    writeToDB(newGoal, "goals");
     // setGoals((prebGoals) => {
     //   return [...prebGoals, newGoal];
     // });

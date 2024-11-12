@@ -1,12 +1,28 @@
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button,Image } from "react-native";
 import React, { useState, useEffect } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import PressableButton from "./PressableButton";
 import { updateDB } from "../Firebase/firestoreHelper";
 import GoalUsers from "./GoalUsers";
+import { storage } from "../Firebase/fireBaseSetup";
+import { ref, getDownloadURL} from "firebase/storage";
 
 export default function GoalDetails({ navigation, route }) {
   const [isWarning, setIsWarning] = useState(false);
+  const [uri, setUri] = useState("");
+
+  useEffect(() => {
+    const getImageUri = async() => {
+      if (route.params.goalData.uri){
+        const imageRef = ref(storage, route.params.goalData.uri);
+        const httpUrl = await getDownloadURL(imageRef);
+        setUri(httpUrl);
+      }
+    }
+    getImageUri();
+  },[])
+
+
 
   function warningHandler() {
     setIsWarning(true);
@@ -42,7 +58,13 @@ export default function GoalDetails({ navigation, route }) {
         <Text style={isWarning && styles.warning}>More Details</Text>
       )}
       <Button title="More Details" onPress={moreDetailsHandler}></Button>
-      <GoalUsers id={route.params.goalData.id} />
+      {uri&&<Image
+          source={{ uri: uri }}
+          style={styles.image}
+          alt="Preview of the image taken"
+        />
+      }   
+        <GoalUsers id={route.params.goalData.id} />
     </View>
   );
 }
@@ -54,5 +76,9 @@ const styles = StyleSheet.create({
   iconStyle: {
     backgroundColor: "red",
     opacity: 0.5,
+  },
+  image: {
+    width: 200,
+    height: 200,
   },
 });
