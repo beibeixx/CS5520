@@ -55,7 +55,7 @@ export default function LocationManager() {
       {location && (
         <Image
           source={{
-            uri: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=AIzaSyCjSt8LUq1zwrYf`,
+            uri: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=${process.env.EXPO_PUBLIC_API_mapsApiKey}`,
           }}
           style={styles.map}
           alt="Preview of the image taken"
