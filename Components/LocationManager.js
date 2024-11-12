@@ -2,10 +2,12 @@ import { Button, StyleSheet, Text, View, Image } from "react-native";
 import React, { useState } from "react";
 import * as Location from "expo-location";
 import { Dimensions } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 const windowWidth = Dimensions.get("window").width;
 
 export default function LocationManager() {
-  const [response, requestPermission] = Location.useForegroundPermissions();
+    const navigation = useNavigation(); 
+    const [response, requestPermission] = Location.useForegroundPermissions();
   const [location, setLocation] = useState(null);
 
   const verifyPermission = async () => {
@@ -44,10 +46,16 @@ export default function LocationManager() {
           locateUserHandler();
         }}
       />
+        <Button
+        title="Choose on map"
+        onPress={() => {
+          navigation.navigate("Map");
+        }}
+      />
       {location && (
         <Image
           source={{
-            uri: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=${process.env.EXPO_PUBLIC_API_mapsApiKey}`,
+            uri: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=AIzaSyCjSt8LUq1zwrYf`,
           }}
           style={styles.map}
           alt="Preview of the image taken"
