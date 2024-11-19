@@ -19,7 +19,7 @@ export default function LocationManager() {
       try {
         const userData = await getOneDocument(auth.currentUser.uid, `users`);
         // console.log(userData);
-        if (userData) {
+        if (userData && userData.location) {
           setLocation(userData.location);
         }
       } catch (error) {
