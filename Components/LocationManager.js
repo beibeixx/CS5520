@@ -5,6 +5,8 @@ import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 const windowWidth = Dimensions.get("window").width;
 import { useRoute } from "@react-navigation/native";
+import { updateDB } from "../Firebase/firestoreHelper";
+import { auth } from "../Firebase/fireBaseSetup";
 
 export default function LocationManager() {
   const navigation = useNavigation();
@@ -13,11 +15,15 @@ export default function LocationManager() {
   const route = useRoute();
 
   useEffect(() => {
-
     if (route.params) {
-      setLocation(route.params.selectedLocation)
+      setLocation(route.params.selectedLocation);
     }
-  }, []);
+  }, [route]);
+
+  const saveLocationHandler = () => {
+    updateDB(auth.currentUser.uid, { location }, "users");
+    navigation.navigate("Home");
+  };
 
   const verifyPermission = async () => {
     try {
@@ -70,6 +76,11 @@ export default function LocationManager() {
           alt="Preview of the image taken"
         />
       )}
+      <Button
+        disabled={!location}
+        title="save my location"
+        onPress={saveLocationHandler}
+      ></Button>
     </View>
   );
 }
