@@ -5,7 +5,7 @@ import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 const windowWidth = Dimensions.get("window").width;
 import { useRoute } from "@react-navigation/native";
-import { updateDB } from "../Firebase/firestoreHelper";
+import { getOneDocument, updateDB } from "../Firebase/firestoreHelper";
 import { auth } from "../Firebase/fireBaseSetup";
 
 export default function LocationManager() {
@@ -13,6 +13,21 @@ export default function LocationManager() {
   const [response, requestPermission] = Location.useForegroundPermissions();
   const [location, setLocation] = useState(null);
   const route = useRoute();
+
+  useEffect(() => {
+    async function getUserData() {
+      try {
+        const userData = await getOneDocument(auth.currentUser.uid, `users`);
+        // console.log(userData);
+        if (userData) {
+          setLocation(userData.location);
+        }
+      } catch (error) {
+        console.error("Error fetching location data:", error);
+      }
+    }
+    getUserData();
+  }, []);
 
   useEffect(() => {
     if (route.params) {
