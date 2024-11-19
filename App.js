@@ -13,7 +13,6 @@ import PressableButton from "./Components/PressableButton";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Map from "./Components/Map";
-
 import * as Notifications from "expo-notifications";
 
 const Stack = createNativeStackNavigator();
@@ -92,6 +91,8 @@ export default function App() {
       }
     });
   }, []);
+
+  
 
   return (
     <NavigationContainer>
