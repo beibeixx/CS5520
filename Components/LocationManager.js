@@ -1,14 +1,23 @@
 import { Button, StyleSheet, Text, View, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 const windowWidth = Dimensions.get("window").width;
+import { useRoute } from "@react-navigation/native";
 
 export default function LocationManager() {
-    const navigation = useNavigation(); 
-    const [response, requestPermission] = Location.useForegroundPermissions();
+  const navigation = useNavigation();
+  const [response, requestPermission] = Location.useForegroundPermissions();
   const [location, setLocation] = useState(null);
+  const route = useRoute();
+
+  useEffect(() => {
+
+    if (route.params) {
+      setLocation(route.params.selectedLocation)
+    }
+  }, []);
 
   const verifyPermission = async () => {
     try {
@@ -46,7 +55,7 @@ export default function LocationManager() {
           locateUserHandler();
         }}
       />
-        <Button
+      <Button
         title="Choose on map"
         onPress={() => {
           navigation.navigate("Map");
@@ -68,6 +77,6 @@ export default function LocationManager() {
 const styles = StyleSheet.create({
   map: {
     width: windowWidth,
-    height: 100,
+    height: 300,
   },
 });
