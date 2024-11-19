@@ -13,8 +13,15 @@ import PressableButton from "./Components/PressableButton";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Map from "./Components/Map";
+import * as Notifications from "expo-notifications";
 
 const Stack = createNativeStackNavigator();
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return { shouldShowAlert: true };
+  },
+});
 
 const AuthStack = (
   <>
@@ -68,12 +75,8 @@ const AppStack = (
         };
       }}
     />
-    <Stack.Screen
-      name="Map"
-      component={Map}
-    /> 
-    
-    </>
+    <Stack.Screen name="Map" component={Map} />
+  </>
 );
 
 export default function App() {
@@ -88,6 +91,8 @@ export default function App() {
       }
     });
   }, []);
+
+  
 
   return (
     <NavigationContainer>

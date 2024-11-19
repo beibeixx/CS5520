@@ -64,7 +64,7 @@ export default function GoalDetails({ navigation, route }) {
           alt="Preview of the image taken"
         />
       }   
-        <GoalUsers id={route.params.goalData.id} />
+        {route.params && <GoalUsers id={route.params.goalData.id} />}
     </View>
   );
 }

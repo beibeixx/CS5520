@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, setDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, setDoc, getDoc } from "firebase/firestore";
 import { database } from "./fireBaseSetup";
 import { doc, deleteDoc } from "firebase/firestore";
 
@@ -52,5 +52,17 @@ export async function getAllDocuments(collectionName) {
     return data;
   } catch (err) {
     console.log("get all docs", err);
+  }
+}
+
+export async function getOneDocument(id, collectionName) {
+  try {
+    const docSnapshot = await getDoc(doc(database, collectionName, id));
+    if (docSnapshot.exists()) {
+      return docSnapshot.data()
+    }
+    return null;
+  } catch (err) {
+    console.log("get one doc", err);
   }
 }

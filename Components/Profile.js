@@ -7,6 +7,7 @@ import GoalUsers from "./GoalUsers";
 import { auth } from "../Firebase/fireBaseSetup";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import LocationManager from "./LocationManager";
+import NotificationManager from "./NotificationManager";
 
 export default function Profile({navigation}) {
   return (
@@ -14,6 +15,7 @@ export default function Profile({navigation}) {
       <Text>{auth.currentUser.email}</Text>
       <Text>{auth.currentUser.uid}</Text>
       <LocationManager/>
+      <NotificationManager/>
     </View>
   );
 }

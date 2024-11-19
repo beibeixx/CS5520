@@ -31,6 +31,7 @@ import { where } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import { uploadBytesResumable } from "firebase/storage";
 import { storage } from "../Firebase/fireBaseSetup";
+import * as Notifications from "expo-notifications";
 
 export default function Home({ navigation, route }) {
   // console.log(database);
@@ -38,6 +39,16 @@ export default function Home({ navigation, route }) {
   const [receivedData, setReceivedData] = useState("");
   const [visible, setVisible] = useState(false);
   const [goals, setGoals] = useState([]);
+
+  useEffect(() => {
+    console.log("Home Page use effect");
+    async function getPushToken() {
+      const pushToken = await Notifications.getExpoPushTokenAsync({
+        projectId: `e38a8832-720c-40ec-8924-bc1a91743608`,
+      });
+    }
+    getPushToken();
+  }, []);
 
   useEffect(() => {
     const listerToFirebase = onSnapshot(

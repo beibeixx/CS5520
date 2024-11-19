@@ -1,14 +1,44 @@
 import { Button, StyleSheet, Text, View, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 const windowWidth = Dimensions.get("window").width;
+import { useRoute } from "@react-navigation/native";
+import { getOneDocument, updateDB } from "../Firebase/firestoreHelper";
+import { auth } from "../Firebase/fireBaseSetup";
 
 export default function LocationManager() {
-    const navigation = useNavigation(); 
-    const [response, requestPermission] = Location.useForegroundPermissions();
+  const navigation = useNavigation();
+  const [response, requestPermission] = Location.useForegroundPermissions();
   const [location, setLocation] = useState(null);
+  const route = useRoute();
+
+  useEffect(() => {
+    async function getUserData() {
+      try {
+        const userData = await getOneDocument(auth.currentUser.uid, `users`);
+        // console.log(userData);
+        if (userData && userData.location) {
+          setLocation(userData.location);
+        }
+      } catch (error) {
+        console.error("Error fetching location data:", error);
+      }
+    }
+    getUserData();
+  }, []);
+
+  useEffect(() => {
+    if (route.params) {
+      setLocation(route.params.selectedLocation);
+    }
+  }, [route]);
+
+  const saveLocationHandler = () => {
+    updateDB(auth.currentUser.uid, { location }, "users");
+    navigation.navigate("Home");
+  };
 
   const verifyPermission = async () => {
     try {
@@ -46,7 +76,7 @@ export default function LocationManager() {
           locateUserHandler();
         }}
       />
-        <Button
+      <Button
         title="Choose on map"
         onPress={() => {
           navigation.navigate("Map");
@@ -61,6 +91,11 @@ export default function LocationManager() {
           alt="Preview of the image taken"
         />
       )}
+      <Button
+        disabled={!location}
+        title="save my location"
+        onPress={saveLocationHandler}
+      ></Button>
     </View>
   );
 }
@@ -68,6 +103,6 @@ export default function LocationManager() {
 const styles = StyleSheet.create({
   map: {
     width: windowWidth,
-    height: 100,
+    height: 300,
   },
 });
